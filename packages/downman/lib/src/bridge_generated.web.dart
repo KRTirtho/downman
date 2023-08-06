@@ -18,7 +18,94 @@ class DownmanPlatform extends FlutterRustBridgeBase<DownmanWire> with FlutterRus
 
 // Section: api2wire
 
+  @protected
+  Object api2wire_HttpClient(HttpClient raw) {
+    return raw.shareOrMove();
+  }
+
+  @protected
+  String api2wire_String(String raw) {
+    return raw;
+  }
+
+  @protected
+  List<dynamic> api2wire___record__String_String(
+      (
+        String,
+        String
+      ) raw) {
+    return [
+      api2wire_String(raw.$1),
+      api2wire_String(raw.$2)
+    ];
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_config(Config raw) {
+    return api2wire_config(raw);
+  }
+
+  @protected
+  int api2wire_box_autoadd_usize(int raw) {
+    return api2wire_usize(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_config(Config raw) {
+    return [
+      api2wire_opt_list___record__String_String(raw.headers),
+      api2wire_opt_box_autoadd_usize(raw.timeoutSec)
+    ];
+  }
+
+  @protected
+  List<dynamic> api2wire_list___record__String_String(
+      List<
+              (
+                String,
+                String
+              )>
+          raw) {
+    return raw.map(api2wire___record__String_String).toList();
+  }
+
+  @protected
+  String? api2wire_opt_String(String? raw) {
+    return raw == null ? null : api2wire_String(raw);
+  }
+
+  @protected
+  List<dynamic>? api2wire_opt_box_autoadd_config(Config? raw) {
+    return raw == null ? null : api2wire_box_autoadd_config(raw);
+  }
+
+  @protected
+  int? api2wire_opt_box_autoadd_usize(int? raw) {
+    return raw == null ? null : api2wire_box_autoadd_usize(raw);
+  }
+
+  @protected
+  List<dynamic>? api2wire_opt_list___record__String_String(
+      List<
+              (
+                String,
+                String
+              )>?
+          raw) {
+    return raw == null ? null : api2wire_list___record__String_String(raw);
+  }
+
+  @protected
+  Uint8List api2wire_uint_8_list(Uint8List raw) {
+    return raw;
+  }
+
 // Section: finalizer
+
+  late final Finalizer<PlatformPointer> _HttpClientFinalizer = Finalizer<PlatformPointer>(inner.drop_opaque_HttpClient);
+  Finalizer<PlatformPointer> get HttpClientFinalizer => _HttpClientFinalizer;
+  late final Finalizer<PlatformPointer> _HttpResponseFinalizer = Finalizer<PlatformPointer>(inner.drop_opaque_HttpResponse);
+  Finalizer<PlatformPointer> get HttpResponseFinalizer => _HttpResponseFinalizer;
 }
 
 // Section: WASM wire module
@@ -31,10 +118,57 @@ external DownmanWasmModule get wasmModule;
 class DownmanWasmModule implements WasmModule {
   external Object /* Promise */ call([String? moduleName]);
   external DownmanWasmModule bind(dynamic thisArg, String moduleName);
+  external dynamic /* Object */ wire_http_client_new();
+
+  external dynamic /* Object */ wire_http_client_get(Object client, String url, List<dynamic>? config);
+
+  external dynamic /* Object */ wire_http_client_post(Object client, String url, String? body, List<dynamic>? config);
+
+  external dynamic /* Object */ wire_http_client_put(Object client, String url, String? body, List<dynamic>? config);
+
+  external dynamic /* Object */ wire_http_client_patch(Object client, String url, String? body, List<dynamic>? config);
+
+  external dynamic /* Object */ wire_http_client_delete(Object client, String url, List<dynamic>? config);
+
+  external dynamic /* Object */ wire_http_client_options(Object client, String url, List<dynamic>? config);
+
+  external dynamic /* Object */ wire_http_client_head(Object client, String url, List<dynamic>? config);
+
+  external dynamic /*  */ drop_opaque_HttpClient(ptr);
+
+  external int /* *const c_void */ share_opaque_HttpClient(ptr);
+
+  external dynamic /*  */ drop_opaque_HttpResponse(ptr);
+
+  external int /* *const c_void */ share_opaque_HttpResponse(ptr);
 }
 
 // Section: WASM wire connector
 
 class DownmanWire extends FlutterRustBridgeWasmWireBase<DownmanWasmModule> {
   DownmanWire(FutureOr<WasmModule> module) : super(WasmModule.cast<DownmanWasmModule>(module));
+
+  dynamic /* Object */ wire_http_client_new() => wasmModule.wire_http_client_new();
+
+  dynamic /* Object */ wire_http_client_get(Object client, String url, List<dynamic>? config) => wasmModule.wire_http_client_get(client, url, config);
+
+  dynamic /* Object */ wire_http_client_post(Object client, String url, String? body, List<dynamic>? config) => wasmModule.wire_http_client_post(client, url, body, config);
+
+  dynamic /* Object */ wire_http_client_put(Object client, String url, String? body, List<dynamic>? config) => wasmModule.wire_http_client_put(client, url, body, config);
+
+  dynamic /* Object */ wire_http_client_patch(Object client, String url, String? body, List<dynamic>? config) => wasmModule.wire_http_client_patch(client, url, body, config);
+
+  dynamic /* Object */ wire_http_client_delete(Object client, String url, List<dynamic>? config) => wasmModule.wire_http_client_delete(client, url, config);
+
+  dynamic /* Object */ wire_http_client_options(Object client, String url, List<dynamic>? config) => wasmModule.wire_http_client_options(client, url, config);
+
+  dynamic /* Object */ wire_http_client_head(Object client, String url, List<dynamic>? config) => wasmModule.wire_http_client_head(client, url, config);
+
+  dynamic /*  */ drop_opaque_HttpClient(ptr) => wasmModule.drop_opaque_HttpClient(ptr);
+
+  int /* *const c_void */ share_opaque_HttpClient(ptr) => wasmModule.share_opaque_HttpClient(ptr);
+
+  dynamic /*  */ drop_opaque_HttpResponse(ptr) => wasmModule.drop_opaque_HttpResponse(ptr);
+
+  int /* *const c_void */ share_opaque_HttpResponse(ptr) => wasmModule.share_opaque_HttpResponse(ptr);
 }

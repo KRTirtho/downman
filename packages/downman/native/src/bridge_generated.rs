@@ -20,8 +20,159 @@ use std::sync::Arc;
 
 // Section: imports
 
+use crate::core::config::Config;
+
 // Section: wire functions
 
+fn wire_http_client_new_impl() -> support::WireSyncReturn {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync(
+        WrapInfo {
+            debug_name: "http_client_new",
+            port: None,
+            mode: FfiCallMode::Sync,
+        },
+        move || Ok(http_client_new()),
+    )
+}
+fn wire_http_client_get_impl(
+    client: impl Wire2Api<RustOpaque<HttpClient>> + UnwindSafe,
+    url: impl Wire2Api<String> + UnwindSafe,
+    config: impl Wire2Api<Option<Config>> + UnwindSafe,
+) -> support::WireSyncReturn {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync(
+        WrapInfo {
+            debug_name: "http_client_get",
+            port: None,
+            mode: FfiCallMode::Sync,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_url = url.wire2api();
+            let api_config = config.wire2api();
+            Ok(http_client_get(api_client, api_url, api_config))
+        },
+    )
+}
+fn wire_http_client_post_impl(
+    client: impl Wire2Api<RustOpaque<HttpClient>> + UnwindSafe,
+    url: impl Wire2Api<String> + UnwindSafe,
+    body: impl Wire2Api<Option<String>> + UnwindSafe,
+    config: impl Wire2Api<Option<Config>> + UnwindSafe,
+) -> support::WireSyncReturn {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync(
+        WrapInfo {
+            debug_name: "http_client_post",
+            port: None,
+            mode: FfiCallMode::Sync,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_url = url.wire2api();
+            let api_body = body.wire2api();
+            let api_config = config.wire2api();
+            Ok(http_client_post(api_client, api_url, api_body, api_config))
+        },
+    )
+}
+fn wire_http_client_put_impl(
+    client: impl Wire2Api<RustOpaque<HttpClient>> + UnwindSafe,
+    url: impl Wire2Api<String> + UnwindSafe,
+    body: impl Wire2Api<Option<String>> + UnwindSafe,
+    config: impl Wire2Api<Option<Config>> + UnwindSafe,
+) -> support::WireSyncReturn {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync(
+        WrapInfo {
+            debug_name: "http_client_put",
+            port: None,
+            mode: FfiCallMode::Sync,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_url = url.wire2api();
+            let api_body = body.wire2api();
+            let api_config = config.wire2api();
+            Ok(http_client_put(api_client, api_url, api_body, api_config))
+        },
+    )
+}
+fn wire_http_client_patch_impl(
+    client: impl Wire2Api<RustOpaque<HttpClient>> + UnwindSafe,
+    url: impl Wire2Api<String> + UnwindSafe,
+    body: impl Wire2Api<Option<String>> + UnwindSafe,
+    config: impl Wire2Api<Option<Config>> + UnwindSafe,
+) -> support::WireSyncReturn {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync(
+        WrapInfo {
+            debug_name: "http_client_patch",
+            port: None,
+            mode: FfiCallMode::Sync,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_url = url.wire2api();
+            let api_body = body.wire2api();
+            let api_config = config.wire2api();
+            Ok(http_client_patch(api_client, api_url, api_body, api_config))
+        },
+    )
+}
+fn wire_http_client_delete_impl(
+    client: impl Wire2Api<RustOpaque<HttpClient>> + UnwindSafe,
+    url: impl Wire2Api<String> + UnwindSafe,
+    config: impl Wire2Api<Option<Config>> + UnwindSafe,
+) -> support::WireSyncReturn {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync(
+        WrapInfo {
+            debug_name: "http_client_delete",
+            port: None,
+            mode: FfiCallMode::Sync,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_url = url.wire2api();
+            let api_config = config.wire2api();
+            Ok(http_client_delete(api_client, api_url, api_config))
+        },
+    )
+}
+fn wire_http_client_options_impl(
+    client: impl Wire2Api<RustOpaque<HttpClient>> + UnwindSafe,
+    url: impl Wire2Api<String> + UnwindSafe,
+    config: impl Wire2Api<Option<Config>> + UnwindSafe,
+) -> support::WireSyncReturn {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync(
+        WrapInfo {
+            debug_name: "http_client_options",
+            port: None,
+            mode: FfiCallMode::Sync,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_url = url.wire2api();
+            let api_config = config.wire2api();
+            Ok(http_client_options(api_client, api_url, api_config))
+        },
+    )
+}
+fn wire_http_client_head_impl(
+    client: impl Wire2Api<RustOpaque<HttpClient>> + UnwindSafe,
+    url: impl Wire2Api<String> + UnwindSafe,
+    config: impl Wire2Api<Option<Config>> + UnwindSafe,
+) -> support::WireSyncReturn {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync(
+        WrapInfo {
+            debug_name: "http_client_head",
+            port: None,
+            mode: FfiCallMode::Sync,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_url = url.wire2api();
+            let api_config = config.wire2api();
+            Ok(http_client_head(api_client, api_url, api_config))
+        },
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks
@@ -44,6 +195,18 @@ where
         (!self.is_null()).then(|| self.wire2api())
     }
 }
+
+impl Wire2Api<u8> for u8 {
+    fn wire2api(self) -> u8 {
+        self
+    }
+}
+
+impl Wire2Api<usize> for usize {
+    fn wire2api(self) -> usize {
+        self
+    }
+}
 // Section: impl IntoDart
 
 // Section: executor
@@ -58,13 +221,220 @@ mod web {
     use super::*;
     // Section: wire functions
 
+    #[wasm_bindgen]
+    pub fn wire_http_client_new() -> support::WireSyncReturn {
+        wire_http_client_new_impl()
+    }
+
+    #[wasm_bindgen]
+    pub fn wire_http_client_get(
+        client: JsValue,
+        url: String,
+        config: JsValue,
+    ) -> support::WireSyncReturn {
+        wire_http_client_get_impl(client, url, config)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire_http_client_post(
+        client: JsValue,
+        url: String,
+        body: Option<String>,
+        config: JsValue,
+    ) -> support::WireSyncReturn {
+        wire_http_client_post_impl(client, url, body, config)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire_http_client_put(
+        client: JsValue,
+        url: String,
+        body: Option<String>,
+        config: JsValue,
+    ) -> support::WireSyncReturn {
+        wire_http_client_put_impl(client, url, body, config)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire_http_client_patch(
+        client: JsValue,
+        url: String,
+        body: Option<String>,
+        config: JsValue,
+    ) -> support::WireSyncReturn {
+        wire_http_client_patch_impl(client, url, body, config)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire_http_client_delete(
+        client: JsValue,
+        url: String,
+        config: JsValue,
+    ) -> support::WireSyncReturn {
+        wire_http_client_delete_impl(client, url, config)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire_http_client_options(
+        client: JsValue,
+        url: String,
+        config: JsValue,
+    ) -> support::WireSyncReturn {
+        wire_http_client_options_impl(client, url, config)
+    }
+
+    #[wasm_bindgen]
+    pub fn wire_http_client_head(
+        client: JsValue,
+        url: String,
+        config: JsValue,
+    ) -> support::WireSyncReturn {
+        wire_http_client_head_impl(client, url, config)
+    }
+
     // Section: allocate functions
 
     // Section: related functions
 
+    #[wasm_bindgen]
+    pub fn drop_opaque_HttpClient(ptr: *const c_void) {
+        unsafe {
+            Arc::<HttpClient>::decrement_strong_count(ptr as _);
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn share_opaque_HttpClient(ptr: *const c_void) -> *const c_void {
+        unsafe {
+            Arc::<HttpClient>::increment_strong_count(ptr as _);
+            ptr
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn drop_opaque_HttpResponse(ptr: *const c_void) {
+        unsafe {
+            Arc::<HttpResponse>::decrement_strong_count(ptr as _);
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn share_opaque_HttpResponse(ptr: *const c_void) -> *const c_void {
+        unsafe {
+            Arc::<HttpResponse>::increment_strong_count(ptr as _);
+            ptr
+        }
+    }
+
     // Section: impl Wire2Api
 
+    impl Wire2Api<String> for String {
+        fn wire2api(self) -> String {
+            self
+        }
+    }
+    impl Wire2Api<(String, String)> for JsValue {
+        fn wire2api(self) -> (String, String) {
+            let self_ = self.dyn_into::<JsArray>().unwrap();
+            assert_eq!(
+                self_.length(),
+                2,
+                "Expected 2 elements, got {}",
+                self_.length()
+            );
+            (self_.get(0).wire2api(), self_.get(1).wire2api())
+        }
+    }
+
+    impl Wire2Api<Config> for JsValue {
+        fn wire2api(self) -> Config {
+            let self_ = self.dyn_into::<JsArray>().unwrap();
+            assert_eq!(
+                self_.length(),
+                2,
+                "Expected 2 elements, got {}",
+                self_.length()
+            );
+            Config {
+                headers: self_.get(0).wire2api(),
+                timeout_sec: self_.get(1).wire2api(),
+            }
+        }
+    }
+    impl Wire2Api<Vec<(String, String)>> for JsValue {
+        fn wire2api(self) -> Vec<(String, String)> {
+            self.dyn_into::<JsArray>()
+                .unwrap()
+                .iter()
+                .map(Wire2Api::wire2api)
+                .collect()
+        }
+    }
+    impl Wire2Api<Option<String>> for Option<String> {
+        fn wire2api(self) -> Option<String> {
+            self.map(Wire2Api::wire2api)
+        }
+    }
+    impl Wire2Api<Option<Config>> for JsValue {
+        fn wire2api(self) -> Option<Config> {
+            (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+        }
+    }
+
+    impl Wire2Api<Option<Vec<(String, String)>>> for JsValue {
+        fn wire2api(self) -> Option<Vec<(String, String)>> {
+            (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+        }
+    }
+
+    impl Wire2Api<Vec<u8>> for Box<[u8]> {
+        fn wire2api(self) -> Vec<u8> {
+            self.into_vec()
+        }
+    }
+
     // Section: impl Wire2Api for JsValue
+
+    impl Wire2Api<RustOpaque<HttpClient>> for JsValue {
+        fn wire2api(self) -> RustOpaque<HttpClient> {
+            #[cfg(target_pointer_width = "64")]
+            {
+                compile_error!("64-bit pointers are not supported.");
+            }
+
+            unsafe { support::opaque_from_dart((self.as_f64().unwrap() as usize) as _) }
+        }
+    }
+    impl Wire2Api<String> for JsValue {
+        fn wire2api(self) -> String {
+            self.as_string().expect("non-UTF-8 string, or not a string")
+        }
+    }
+    impl Wire2Api<Option<String>> for JsValue {
+        fn wire2api(self) -> Option<String> {
+            (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+        }
+    }
+    impl Wire2Api<Option<usize>> for JsValue {
+        fn wire2api(self) -> Option<usize> {
+            (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+        }
+    }
+    impl Wire2Api<u8> for JsValue {
+        fn wire2api(self) -> u8 {
+            self.unchecked_into_f64() as _
+        }
+    }
+    impl Wire2Api<Vec<u8>> for JsValue {
+        fn wire2api(self) -> Vec<u8> {
+            self.unchecked_into::<js_sys::Uint8Array>().to_vec().into()
+        }
+    }
+    impl Wire2Api<usize> for JsValue {
+        fn wire2api(self) -> usize {
+            self.unchecked_into_f64() as _
+        }
+    }
 }
 #[cfg(target_family = "wasm")]
 pub use web::*;
@@ -74,13 +444,240 @@ mod io {
     use super::*;
     // Section: wire functions
 
+    #[no_mangle]
+    pub extern "C" fn wire_http_client_new() -> support::WireSyncReturn {
+        wire_http_client_new_impl()
+    }
+
+    #[no_mangle]
+    pub extern "C" fn wire_http_client_get(
+        client: wire_HttpClient,
+        url: *mut wire_uint_8_list,
+        config: *mut wire_Config,
+    ) -> support::WireSyncReturn {
+        wire_http_client_get_impl(client, url, config)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn wire_http_client_post(
+        client: wire_HttpClient,
+        url: *mut wire_uint_8_list,
+        body: *mut wire_uint_8_list,
+        config: *mut wire_Config,
+    ) -> support::WireSyncReturn {
+        wire_http_client_post_impl(client, url, body, config)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn wire_http_client_put(
+        client: wire_HttpClient,
+        url: *mut wire_uint_8_list,
+        body: *mut wire_uint_8_list,
+        config: *mut wire_Config,
+    ) -> support::WireSyncReturn {
+        wire_http_client_put_impl(client, url, body, config)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn wire_http_client_patch(
+        client: wire_HttpClient,
+        url: *mut wire_uint_8_list,
+        body: *mut wire_uint_8_list,
+        config: *mut wire_Config,
+    ) -> support::WireSyncReturn {
+        wire_http_client_patch_impl(client, url, body, config)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn wire_http_client_delete(
+        client: wire_HttpClient,
+        url: *mut wire_uint_8_list,
+        config: *mut wire_Config,
+    ) -> support::WireSyncReturn {
+        wire_http_client_delete_impl(client, url, config)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn wire_http_client_options(
+        client: wire_HttpClient,
+        url: *mut wire_uint_8_list,
+        config: *mut wire_Config,
+    ) -> support::WireSyncReturn {
+        wire_http_client_options_impl(client, url, config)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn wire_http_client_head(
+        client: wire_HttpClient,
+        url: *mut wire_uint_8_list,
+        config: *mut wire_Config,
+    ) -> support::WireSyncReturn {
+        wire_http_client_head_impl(client, url, config)
+    }
+
     // Section: allocate functions
+
+    #[no_mangle]
+    pub extern "C" fn new_HttpClient() -> wire_HttpClient {
+        wire_HttpClient::new_with_null_ptr()
+    }
+
+    #[no_mangle]
+    pub extern "C" fn new_box_autoadd_config_0() -> *mut wire_Config {
+        support::new_leak_box_ptr(wire_Config::new_with_null_ptr())
+    }
+
+    #[no_mangle]
+    pub extern "C" fn new_box_autoadd_usize_0(value: usize) -> *mut usize {
+        support::new_leak_box_ptr(value)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn new_list___record__String_String_0(
+        len: i32,
+    ) -> *mut wire_list___record__String_String {
+        let wrap = wire_list___record__String_String {
+            ptr: support::new_leak_vec_ptr(
+                <wire___record__String_String>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        support::new_leak_box_ptr(wrap)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn new_uint_8_list_0(len: i32) -> *mut wire_uint_8_list {
+        let ans = wire_uint_8_list {
+            ptr: support::new_leak_vec_ptr(Default::default(), len),
+            len,
+        };
+        support::new_leak_box_ptr(ans)
+    }
 
     // Section: related functions
 
+    #[no_mangle]
+    pub extern "C" fn drop_opaque_HttpClient(ptr: *const c_void) {
+        unsafe {
+            Arc::<HttpClient>::decrement_strong_count(ptr as _);
+        }
+    }
+
+    #[no_mangle]
+    pub extern "C" fn share_opaque_HttpClient(ptr: *const c_void) -> *const c_void {
+        unsafe {
+            Arc::<HttpClient>::increment_strong_count(ptr as _);
+            ptr
+        }
+    }
+
+    #[no_mangle]
+    pub extern "C" fn drop_opaque_HttpResponse(ptr: *const c_void) {
+        unsafe {
+            Arc::<HttpResponse>::decrement_strong_count(ptr as _);
+        }
+    }
+
+    #[no_mangle]
+    pub extern "C" fn share_opaque_HttpResponse(ptr: *const c_void) -> *const c_void {
+        unsafe {
+            Arc::<HttpResponse>::increment_strong_count(ptr as _);
+            ptr
+        }
+    }
+
     // Section: impl Wire2Api
 
+    impl Wire2Api<RustOpaque<HttpClient>> for wire_HttpClient {
+        fn wire2api(self) -> RustOpaque<HttpClient> {
+            unsafe { support::opaque_from_dart(self.ptr as _) }
+        }
+    }
+    impl Wire2Api<String> for *mut wire_uint_8_list {
+        fn wire2api(self) -> String {
+            let vec: Vec<u8> = self.wire2api();
+            String::from_utf8_lossy(&vec).into_owned()
+        }
+    }
+    impl Wire2Api<(String, String)> for wire___record__String_String {
+        fn wire2api(self) -> (String, String) {
+            (self.field0.wire2api(), self.field1.wire2api())
+        }
+    }
+    impl Wire2Api<Config> for *mut wire_Config {
+        fn wire2api(self) -> Config {
+            let wrap = unsafe { support::box_from_leak_ptr(self) };
+            Wire2Api::<Config>::wire2api(*wrap).into()
+        }
+    }
+    impl Wire2Api<usize> for *mut usize {
+        fn wire2api(self) -> usize {
+            unsafe { *support::box_from_leak_ptr(self) }
+        }
+    }
+    impl Wire2Api<Config> for wire_Config {
+        fn wire2api(self) -> Config {
+            Config {
+                headers: self.headers.wire2api(),
+                timeout_sec: self.timeout_sec.wire2api(),
+            }
+        }
+    }
+    impl Wire2Api<Vec<(String, String)>> for *mut wire_list___record__String_String {
+        fn wire2api(self) -> Vec<(String, String)> {
+            let vec = unsafe {
+                let wrap = support::box_from_leak_ptr(self);
+                support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(Wire2Api::wire2api).collect()
+        }
+    }
+
+    impl Wire2Api<Vec<u8>> for *mut wire_uint_8_list {
+        fn wire2api(self) -> Vec<u8> {
+            unsafe {
+                let wrap = support::box_from_leak_ptr(self);
+                support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            }
+        }
+    }
+
     // Section: wire structs
+
+    #[repr(C)]
+    #[derive(Clone)]
+    pub struct wire_HttpClient {
+        ptr: *const core::ffi::c_void,
+    }
+
+    #[repr(C)]
+    #[derive(Clone)]
+    pub struct wire___record__String_String {
+        field0: *mut wire_uint_8_list,
+        field1: *mut wire_uint_8_list,
+    }
+
+    #[repr(C)]
+    #[derive(Clone)]
+    pub struct wire_Config {
+        headers: *mut wire_list___record__String_String,
+        timeout_sec: *mut usize,
+    }
+
+    #[repr(C)]
+    #[derive(Clone)]
+    pub struct wire_list___record__String_String {
+        ptr: *mut wire___record__String_String,
+        len: i32,
+    }
+
+    #[repr(C)]
+    #[derive(Clone)]
+    pub struct wire_uint_8_list {
+        ptr: *mut u8,
+        len: i32,
+    }
 
     // Section: impl NewWithNullPtr
 
@@ -91,6 +688,44 @@ mod io {
     impl<T> NewWithNullPtr for *mut T {
         fn new_with_null_ptr() -> Self {
             std::ptr::null_mut()
+        }
+    }
+
+    impl NewWithNullPtr for wire_HttpClient {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                ptr: core::ptr::null(),
+            }
+        }
+    }
+
+    impl NewWithNullPtr for wire___record__String_String {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                field0: core::ptr::null_mut(),
+                field1: core::ptr::null_mut(),
+            }
+        }
+    }
+
+    impl Default for wire___record__String_String {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+
+    impl NewWithNullPtr for wire_Config {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                headers: core::ptr::null_mut(),
+                timeout_sec: core::ptr::null_mut(),
+            }
+        }
+    }
+
+    impl Default for wire_Config {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
         }
     }
 

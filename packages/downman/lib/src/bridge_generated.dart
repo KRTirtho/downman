@@ -15,7 +15,89 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:uuid/uuid.dart';
 import 'bridge_generated.io.dart' if (dart.library.html) 'bridge_generated.web.dart';
 
-abstract class Downman {}
+abstract class Downman {
+  HttpClient httpClientNew({dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientNewConstMeta;
+
+  HttpResponse httpClientGet({required HttpClient client, required String url, Config? config, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientGetConstMeta;
+
+  HttpResponse httpClientPost({required HttpClient client, required String url, String? body, Config? config, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientPostConstMeta;
+
+  HttpResponse httpClientPut({required HttpClient client, required String url, String? body, Config? config, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientPutConstMeta;
+
+  HttpResponse httpClientPatch({required HttpClient client, required String url, String? body, Config? config, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientPatchConstMeta;
+
+  HttpResponse httpClientDelete({required HttpClient client, required String url, Config? config, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientDeleteConstMeta;
+
+  HttpResponse httpClientOptions({required HttpClient client, required String url, Config? config, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientOptionsConstMeta;
+
+  HttpResponse httpClientHead({required HttpClient client, required String url, Config? config, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientHeadConstMeta;
+
+  DropFnType get dropOpaqueHttpClient;
+  ShareFnType get shareOpaqueHttpClient;
+  OpaqueTypeFinalizer get HttpClientFinalizer;
+
+  DropFnType get dropOpaqueHttpResponse;
+  ShareFnType get shareOpaqueHttpResponse;
+  OpaqueTypeFinalizer get HttpResponseFinalizer;
+}
+
+@sealed
+class HttpClient extends FrbOpaque {
+  final Downman bridge;
+  HttpClient.fromRaw(int ptr, int size, this.bridge) : super.unsafe(ptr, size);
+  @override
+  DropFnType get dropFn => bridge.dropOpaqueHttpClient;
+
+  @override
+  ShareFnType get shareFn => bridge.shareOpaqueHttpClient;
+
+  @override
+  OpaqueTypeFinalizer get staticFinalizer => bridge.HttpClientFinalizer;
+}
+
+@sealed
+class HttpResponse extends FrbOpaque {
+  final Downman bridge;
+  HttpResponse.fromRaw(int ptr, int size, this.bridge) : super.unsafe(ptr, size);
+  @override
+  DropFnType get dropFn => bridge.dropOpaqueHttpResponse;
+
+  @override
+  ShareFnType get shareFn => bridge.shareOpaqueHttpResponse;
+
+  @override
+  OpaqueTypeFinalizer get staticFinalizer => bridge.HttpResponseFinalizer;
+}
+
+class Config {
+  final List<
+      (
+        String,
+        String
+      )>? headers;
+  final int? timeoutSec;
+
+  const Config({
+    this.headers,
+    this.timeoutSec,
+  });
+}
 
 class DownmanImpl implements Downman {
   final DownmanPlatform _platform;
@@ -24,12 +106,243 @@ class DownmanImpl implements Downman {
   /// Only valid on web/WASM platforms.
   factory DownmanImpl.wasm(FutureOr<WasmModule> module) => DownmanImpl(module as ExternalLibrary);
   DownmanImpl.raw(this._platform);
+  HttpClient httpClientNew({dynamic hint}) {
+    return _platform.executeSync(FlutterRustBridgeSyncTask(
+      callFfi: () => _platform.inner.wire_http_client_new(),
+      parseSuccessData: _wire2api_HttpClient,
+      constMeta: kHttpClientNewConstMeta,
+      argValues: [],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientNewConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "http_client_new",
+        argNames: [],
+      );
+
+  HttpResponse httpClientGet({required HttpClient client, required String url, Config? config, dynamic hint}) {
+    var arg0 = _platform.api2wire_HttpClient(client);
+    var arg1 = _platform.api2wire_String(url);
+    var arg2 = _platform.api2wire_opt_box_autoadd_config(config);
+    return _platform.executeSync(FlutterRustBridgeSyncTask(
+      callFfi: () => _platform.inner.wire_http_client_get(arg0, arg1, arg2),
+      parseSuccessData: _wire2api_HttpResponse,
+      constMeta: kHttpClientGetConstMeta,
+      argValues: [
+        client,
+        url,
+        config
+      ],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientGetConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "http_client_get",
+        argNames: [
+          "client",
+          "url",
+          "config"
+        ],
+      );
+
+  HttpResponse httpClientPost({required HttpClient client, required String url, String? body, Config? config, dynamic hint}) {
+    var arg0 = _platform.api2wire_HttpClient(client);
+    var arg1 = _platform.api2wire_String(url);
+    var arg2 = _platform.api2wire_opt_String(body);
+    var arg3 = _platform.api2wire_opt_box_autoadd_config(config);
+    return _platform.executeSync(FlutterRustBridgeSyncTask(
+      callFfi: () => _platform.inner.wire_http_client_post(arg0, arg1, arg2, arg3),
+      parseSuccessData: _wire2api_HttpResponse,
+      constMeta: kHttpClientPostConstMeta,
+      argValues: [
+        client,
+        url,
+        body,
+        config
+      ],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientPostConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "http_client_post",
+        argNames: [
+          "client",
+          "url",
+          "body",
+          "config"
+        ],
+      );
+
+  HttpResponse httpClientPut({required HttpClient client, required String url, String? body, Config? config, dynamic hint}) {
+    var arg0 = _platform.api2wire_HttpClient(client);
+    var arg1 = _platform.api2wire_String(url);
+    var arg2 = _platform.api2wire_opt_String(body);
+    var arg3 = _platform.api2wire_opt_box_autoadd_config(config);
+    return _platform.executeSync(FlutterRustBridgeSyncTask(
+      callFfi: () => _platform.inner.wire_http_client_put(arg0, arg1, arg2, arg3),
+      parseSuccessData: _wire2api_HttpResponse,
+      constMeta: kHttpClientPutConstMeta,
+      argValues: [
+        client,
+        url,
+        body,
+        config
+      ],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientPutConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "http_client_put",
+        argNames: [
+          "client",
+          "url",
+          "body",
+          "config"
+        ],
+      );
+
+  HttpResponse httpClientPatch({required HttpClient client, required String url, String? body, Config? config, dynamic hint}) {
+    var arg0 = _platform.api2wire_HttpClient(client);
+    var arg1 = _platform.api2wire_String(url);
+    var arg2 = _platform.api2wire_opt_String(body);
+    var arg3 = _platform.api2wire_opt_box_autoadd_config(config);
+    return _platform.executeSync(FlutterRustBridgeSyncTask(
+      callFfi: () => _platform.inner.wire_http_client_patch(arg0, arg1, arg2, arg3),
+      parseSuccessData: _wire2api_HttpResponse,
+      constMeta: kHttpClientPatchConstMeta,
+      argValues: [
+        client,
+        url,
+        body,
+        config
+      ],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientPatchConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "http_client_patch",
+        argNames: [
+          "client",
+          "url",
+          "body",
+          "config"
+        ],
+      );
+
+  HttpResponse httpClientDelete({required HttpClient client, required String url, Config? config, dynamic hint}) {
+    var arg0 = _platform.api2wire_HttpClient(client);
+    var arg1 = _platform.api2wire_String(url);
+    var arg2 = _platform.api2wire_opt_box_autoadd_config(config);
+    return _platform.executeSync(FlutterRustBridgeSyncTask(
+      callFfi: () => _platform.inner.wire_http_client_delete(arg0, arg1, arg2),
+      parseSuccessData: _wire2api_HttpResponse,
+      constMeta: kHttpClientDeleteConstMeta,
+      argValues: [
+        client,
+        url,
+        config
+      ],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientDeleteConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "http_client_delete",
+        argNames: [
+          "client",
+          "url",
+          "config"
+        ],
+      );
+
+  HttpResponse httpClientOptions({required HttpClient client, required String url, Config? config, dynamic hint}) {
+    var arg0 = _platform.api2wire_HttpClient(client);
+    var arg1 = _platform.api2wire_String(url);
+    var arg2 = _platform.api2wire_opt_box_autoadd_config(config);
+    return _platform.executeSync(FlutterRustBridgeSyncTask(
+      callFfi: () => _platform.inner.wire_http_client_options(arg0, arg1, arg2),
+      parseSuccessData: _wire2api_HttpResponse,
+      constMeta: kHttpClientOptionsConstMeta,
+      argValues: [
+        client,
+        url,
+        config
+      ],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientOptionsConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "http_client_options",
+        argNames: [
+          "client",
+          "url",
+          "config"
+        ],
+      );
+
+  HttpResponse httpClientHead({required HttpClient client, required String url, Config? config, dynamic hint}) {
+    var arg0 = _platform.api2wire_HttpClient(client);
+    var arg1 = _platform.api2wire_String(url);
+    var arg2 = _platform.api2wire_opt_box_autoadd_config(config);
+    return _platform.executeSync(FlutterRustBridgeSyncTask(
+      callFfi: () => _platform.inner.wire_http_client_head(arg0, arg1, arg2),
+      parseSuccessData: _wire2api_HttpResponse,
+      constMeta: kHttpClientHeadConstMeta,
+      argValues: [
+        client,
+        url,
+        config
+      ],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHttpClientHeadConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "http_client_head",
+        argNames: [
+          "client",
+          "url",
+          "config"
+        ],
+      );
+
+  DropFnType get dropOpaqueHttpClient => _platform.inner.drop_opaque_HttpClient;
+  ShareFnType get shareOpaqueHttpClient => _platform.inner.share_opaque_HttpClient;
+  OpaqueTypeFinalizer get HttpClientFinalizer => _platform.HttpClientFinalizer;
+
+  DropFnType get dropOpaqueHttpResponse => _platform.inner.drop_opaque_HttpResponse;
+  ShareFnType get shareOpaqueHttpResponse => _platform.inner.share_opaque_HttpResponse;
+  OpaqueTypeFinalizer get HttpResponseFinalizer => _platform.HttpResponseFinalizer;
+
   void dispose() {
     _platform.dispose();
   }
 // Section: wire2api
+
+  HttpClient _wire2api_HttpClient(dynamic raw) {
+    return HttpClient.fromRaw(raw[0], raw[1], this);
+  }
+
+  HttpResponse _wire2api_HttpResponse(dynamic raw) {
+    return HttpResponse.fromRaw(raw[0], raw[1], this);
+  }
 }
 
 // Section: api2wire
 
+@protected
+int api2wire_u8(int raw) {
+  return raw;
+}
+
+@protected
+int api2wire_usize(int raw) {
+  return raw;
+}
 // Section: finalizer

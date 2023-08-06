@@ -1,36 +1,23 @@
-use reqwest::{header::HeaderMap, Method, Url};
+use flutter_rust_bridge::support::lazy_static;
+use reqwest::{header::HeaderMap, Body, Method, Request, Url};
 
 use super::{
     config::{BaseConfig, Config},
     response::HttpResponse,
 };
 
+lazy_static! {
+    static ref CLIENT: reqwest::Client = reqwest::Client::new();
+}
+
 pub struct HttpClient {
     base_config: Option<BaseConfig>,
-    client: reqwest::Client,
 }
 
 impl HttpClient {
     pub fn new(config: Option<BaseConfig>) -> Self {
-        let mut client = reqwest::Client::builder();
-
-        if let Some(config) = config.clone() {
-            if let Some(timeout) = config.timeout_sec {
-                client = client.timeout(std::time::Duration::from_secs(timeout as u64));
-            }
-
-            if let Some(max_redirects) = config.max_redirects {
-                client = client.redirect(reqwest::redirect::Policy::limited(max_redirects));
-            }
-
-            if let Some(headers) = config.headers {
-                client = client.default_headers(HeaderMap::try_from(&headers).unwrap());
-            }
-        }
-
         Self {
             base_config: config,
-            client: client.build().unwrap(),
         }
     }
 
@@ -52,27 +39,64 @@ impl HttpClient {
         body: Option<String>,
         config: Option<Config>,
     ) -> HttpResponse {
-        let mut request = self.client.request(method, self.get_absolute_url(url));
+        let mut request = Request::new(method, self.get_absolute_url(url));
 
         if let Some(config) = config {
-            if let Some(timeout) = config.timeout_sec {
-                request = request.timeout(std::time::Duration::from_secs(timeout as u64));
-            }
+            let merged_config = self
+                .base_config
+                .clone()
+                .and_then(|f| Some(f.merge_config(config.clone())));
 
-            if let Some(headers) = config.headers {
-                request = request.headers(HeaderMap::try_from(&headers).unwrap());
+            if let Some(config) = merged_config {
+                if let Some(timeout) = config.timeout_sec {
+                    request
+                        .timeout_mut()
+                        .replace(std::time::Duration::from_secs(timeout as u64));
+                }
+
+                let headers = config.get_headers();
+
+                if let Some(headers) = headers {
+                    request.headers_mut().extend(headers);
+                }
+            } else {
+                if let Some(timeout) = config.timeout_sec {
+                    request
+                        .timeout_mut()
+                        .replace(std::time::Duration::from_secs(timeout as u64));
+                }
+
+                let headers = config.get_headers();
+
+                if let Some(headers) = headers {
+                    request.headers_mut().extend(headers);
+                }
             }
         }
 
         if let Some(body) = body {
-            request = request.body(body);
+            request.body_mut().replace(Body::from(body));
         }
 
-        HttpResponse::from(self.client.execute(request.build().unwrap()).await.unwrap()).await
+        let res = CLIENT.execute(request).await.unwrap().into();
+
+        HttpResponse::from(res).await
     }
 
     pub async fn get(&self, url: String, config: Option<Config>) -> HttpResponse {
         self.build_request(Method::GET, url, None, config).await
+    }
+
+    pub async fn delete(&self, url: String, config: Option<Config>) -> HttpResponse {
+        self.build_request(Method::DELETE, url, None, config).await
+    }
+
+    pub async fn head(&self, url: String, config: Option<Config>) -> HttpResponse {
+        self.build_request(Method::HEAD, url, None, config).await
+    }
+
+    pub async fn options(&self, url: String, config: Option<Config>) -> HttpResponse {
+        self.build_request(Method::OPTIONS, url, None, config).await
     }
 
     pub async fn post(
@@ -93,14 +117,6 @@ impl HttpClient {
         self.build_request(Method::PUT, url, body, config).await
     }
 
-    pub async fn delete(&self, url: String, config: Option<Config>) -> HttpResponse {
-        self.build_request(Method::DELETE, url, None, config).await
-    }
-
-    pub async fn head(&self, url: String, config: Option<Config>) -> HttpResponse {
-        self.build_request(Method::HEAD, url, None, config).await
-    }
-
     pub async fn patch(
         &self,
         url: String,
@@ -108,9 +124,5 @@ impl HttpClient {
         config: Option<Config>,
     ) -> HttpResponse {
         self.build_request(Method::PATCH, url, body, config).await
-    }
-
-    pub async fn options(&self, url: String, config: Option<Config>) -> HttpResponse {
-        self.build_request(Method::OPTIONS, url, None, config).await
     }
 }
