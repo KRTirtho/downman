@@ -11,4 +11,5 @@ flutter_rust_bridge_codegen = "1.80.*"
 
 [dependencies]
 flutter_rust_bridge = "1.80.*"
-downloader = "0.2.7"
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1", features = ["full"] }
