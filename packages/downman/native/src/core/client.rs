@@ -1,5 +1,5 @@
 use flutter_rust_bridge::support::lazy_static;
-use reqwest::{header::HeaderMap, Body, Method, Request, Url};
+use reqwest::{Body, Method, Request, Url};
 
 use super::{
     config::{BaseConfig, Config},
@@ -11,7 +11,7 @@ lazy_static! {
 }
 
 pub struct HttpClient {
-    base_config: Option<BaseConfig>,
+    pub base_config: Option<BaseConfig>,
 }
 
 impl HttpClient {

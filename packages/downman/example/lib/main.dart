@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:downman/downman.dart' as downman;
+import 'package:downman/downman.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Downman.initialize();
   runApp(const MyApp());
 }
 
@@ -15,14 +19,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late int sumResult;
-  late Future<int> sumAsyncResult;
+  late final Downman downman;
 
   @override
   void initState() {
     super.initState();
-    sumResult = downman.sum(1, 2);
-    sumAsyncResult = downman.sumAsync(3, 4);
+    downman = Downman();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final res =
+          await downman.get("https://jsonplaceholder.typicode.com/todos/1");
+
+      print(
+        // bytes to utf text
+        res.body != null
+            ? jsonDecode(const Utf8Decoder().convert(res.body!.toList()))
+            : "Failed to get body",
+      );
+
+      print(
+        "Status code: ${res.status}\n"
+        "Content headers: ${res.headers}\n",
+      );
+    });
   }
 
   @override
@@ -37,33 +55,16 @@ class _MyAppState extends State<MyApp> {
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(10),
-            child: Column(
+            child: const Column(
               children: [
-                const Text(
+                Text(
                   'This calls a native function through FFI that is shipped as source in the package. '
                   'The native code is built as part of the Flutter Runner build.',
                   style: textStyle,
                   textAlign: TextAlign.center,
                 ),
                 spacerSmall,
-                Text(
-                  'sum(1, 2) = $sumResult',
-                  style: textStyle,
-                  textAlign: TextAlign.center,
-                ),
                 spacerSmall,
-                FutureBuilder<int>(
-                  future: sumAsyncResult,
-                  builder: (BuildContext context, AsyncSnapshot<int> value) {
-                    final displayValue =
-                        (value.hasData) ? value.data : 'loading';
-                    return Text(
-                      'await sumAsync(3, 4) = $displayValue',
-                      style: textStyle,
-                      textAlign: TextAlign.center,
-                    );
-                  },
-                ),
               ],
             ),
           ),

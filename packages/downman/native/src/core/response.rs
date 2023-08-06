@@ -1,11 +1,9 @@
-use std::collections::HashMap;
-
 use reqwest::Response;
 
 #[derive(Debug, Clone)]
 pub struct HttpResponse {
     pub status: u16,
-    pub headers: HashMap<String, String>,
+    pub headers: Vec<(String, String)>,
     pub body: Option<Vec<u8>>,
     pub url: String,
 }
@@ -17,7 +15,7 @@ impl HttpResponse {
             .headers()
             .iter()
             .map(|(k, v)| (k.as_str().to_string(), v.to_str().unwrap().to_string()))
-            .collect::<HashMap<String, String>>();
+            .collect::<Vec<(String, String)>>();
         let url = response.url().to_string();
         let body = match response.bytes().await {
             Ok(bytes) => Some(bytes.to_vec()),

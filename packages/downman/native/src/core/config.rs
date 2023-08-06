@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use reqwest::header::HeaderMap;
 
 #[derive(Debug, Clone)]
@@ -23,13 +25,12 @@ impl BaseConfig {
 
     pub fn get_headers(&self) -> Option<HeaderMap> {
         if let Some(headers) = self.headers.clone() {
-            let mut headers_map = HeaderMap::new();
+            let map = headers
+                .iter()
+                .map(|(k, v)| (k.clone(), v.clone()))
+                .collect::<HashMap<String, String>>();
 
-            for (key, value) in headers {
-                headers_map.insert(key.clone().as_str(), value.parse().unwrap());
-            }
-
-            Some(headers_map)
+            HeaderMap::try_from(&map).ok()
         } else {
             None
         }
@@ -45,13 +46,12 @@ pub struct Config {
 impl Config {
     pub fn get_headers(&self) -> Option<HeaderMap> {
         if let Some(headers) = self.headers.clone() {
-            let mut headers_map = HeaderMap::new();
+            let map = headers
+                .iter()
+                .map(|(k, v)| (k.clone(), v.clone()))
+                .collect::<HashMap<String, String>>();
 
-            for (key, value) in headers {
-                headers_map.insert(key.clone().as_str(), value.parse().unwrap());
-            }
-
-            Some(headers_map)
+            HeaderMap::try_from(&map).ok()
         } else {
             None
         }

@@ -29,6 +29,13 @@ class DownmanPlatform extends FlutterRustBridgeBase<DownmanWire> {
   }
 
   @protected
+  ffi.Pointer<wire_BaseConfig> api2wire_box_autoadd_base_config(BaseConfig raw) {
+    final ptr = inner.new_box_autoadd_base_config_0();
+    _api_fill_to_wire_base_config(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
   ffi.Pointer<wire_Config> api2wire_box_autoadd_config(Config raw) {
     final ptr = inner.new_box_autoadd_config_0();
     _api_fill_to_wire_config(raw, ptr.ref);
@@ -58,6 +65,11 @@ class DownmanPlatform extends FlutterRustBridgeBase<DownmanWire> {
   @protected
   ffi.Pointer<wire_uint_8_list> api2wire_opt_String(String? raw) {
     return raw == null ? ffi.nullptr : api2wire_String(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_BaseConfig> api2wire_opt_box_autoadd_base_config(BaseConfig? raw) {
+    return raw == null ? ffi.nullptr : api2wire_box_autoadd_base_config(raw);
   }
 
   @protected
@@ -92,8 +104,6 @@ class DownmanPlatform extends FlutterRustBridgeBase<DownmanWire> {
 
   late final OpaqueTypeFinalizer _HttpClientFinalizer = OpaqueTypeFinalizer(inner._drop_opaque_HttpClientPtr);
   OpaqueTypeFinalizer get HttpClientFinalizer => _HttpClientFinalizer;
-  late final OpaqueTypeFinalizer _HttpResponseFinalizer = OpaqueTypeFinalizer(inner._drop_opaque_HttpResponsePtr);
-  OpaqueTypeFinalizer get HttpResponseFinalizer => _HttpResponseFinalizer;
 // Section: api_fill_to_wire
 
   void _api_fill_to_wire_HttpClient(HttpClient apiObj, wire_HttpClient wireObj) {
@@ -110,6 +120,16 @@ class DownmanPlatform extends FlutterRustBridgeBase<DownmanWire> {
     wireObj.field1 = api2wire_String(apiObj.$2);
   }
 
+  void _api_fill_to_wire_base_config(BaseConfig apiObj, wire_BaseConfig wireObj) {
+    wireObj.base_url = api2wire_opt_String(apiObj.baseUrl);
+    wireObj.headers = api2wire_opt_list___record__String_String(apiObj.headers);
+    wireObj.timeout_sec = api2wire_opt_box_autoadd_usize(apiObj.timeoutSec);
+  }
+
+  void _api_fill_to_wire_box_autoadd_base_config(BaseConfig apiObj, ffi.Pointer<wire_BaseConfig> wireObj) {
+    _api_fill_to_wire_base_config(apiObj, wireObj.ref);
+  }
+
   void _api_fill_to_wire_box_autoadd_config(Config apiObj, ffi.Pointer<wire_Config> wireObj) {
     _api_fill_to_wire_config(apiObj, wireObj.ref);
   }
@@ -117,6 +137,10 @@ class DownmanPlatform extends FlutterRustBridgeBase<DownmanWire> {
   void _api_fill_to_wire_config(Config apiObj, wire_Config wireObj) {
     wireObj.headers = api2wire_opt_list___record__String_String(apiObj.headers);
     wireObj.timeout_sec = api2wire_opt_box_autoadd_usize(apiObj.timeoutSec);
+  }
+
+  void _api_fill_to_wire_opt_box_autoadd_base_config(BaseConfig? apiObj, ffi.Pointer<wire_BaseConfig> wireObj) {
+    if (apiObj != null) _api_fill_to_wire_box_autoadd_base_config(apiObj, wireObj);
   }
 
   void _api_fill_to_wire_opt_box_autoadd_config(Config? apiObj, ffi.Pointer<wire_Config> wireObj) {
@@ -200,35 +224,54 @@ class DownmanWire implements FlutterRustBridgeWireBase {
   late final _init_frb_dart_api_dlPtr = _lookup<ffi.NativeFunction<ffi.IntPtr Function(ffi.Pointer<ffi.Void>)>>('init_frb_dart_api_dl');
   late final _init_frb_dart_api_dl = _init_frb_dart_api_dlPtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
-  WireSyncReturn wire_http_client_new() {
-    return _wire_http_client_new();
+  WireSyncReturn wire_http_client_new(
+    ffi.Pointer<wire_BaseConfig> config,
+  ) {
+    return _wire_http_client_new(
+      config,
+    );
   }
 
-  late final _wire_http_client_newPtr = _lookup<ffi.NativeFunction<WireSyncReturn Function()>>('wire_http_client_new');
-  late final _wire_http_client_new = _wire_http_client_newPtr.asFunction<WireSyncReturn Function()>();
+  late final _wire_http_client_newPtr = _lookup<ffi.NativeFunction<WireSyncReturn Function(ffi.Pointer<wire_BaseConfig>)>>('wire_http_client_new');
+  late final _wire_http_client_new = _wire_http_client_newPtr.asFunction<WireSyncReturn Function(ffi.Pointer<wire_BaseConfig>)>();
 
-  WireSyncReturn wire_http_client_get(
+  void wire____why_http_client(
+    int port_,
+  ) {
+    return _wire____why_http_client(
+      port_,
+    );
+  }
+
+  late final _wire____why_http_clientPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>('wire____why_http_client');
+  late final _wire____why_http_client = _wire____why_http_clientPtr.asFunction<void Function(int)>();
+
+  void wire_http_client_get(
+    int port_,
     wire_HttpClient client,
     ffi.Pointer<wire_uint_8_list> url,
     ffi.Pointer<wire_Config> config,
   ) {
     return _wire_http_client_get(
+      port_,
       client,
       url,
       config,
     );
   }
 
-  late final _wire_http_client_getPtr = _lookup<ffi.NativeFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_get');
-  late final _wire_http_client_get = _wire_http_client_getPtr.asFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
+  late final _wire_http_client_getPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_get');
+  late final _wire_http_client_get = _wire_http_client_getPtr.asFunction<void Function(int, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
 
-  WireSyncReturn wire_http_client_post(
+  void wire_http_client_post(
+    int port_,
     wire_HttpClient client,
     ffi.Pointer<wire_uint_8_list> url,
     ffi.Pointer<wire_uint_8_list> body,
     ffi.Pointer<wire_Config> config,
   ) {
     return _wire_http_client_post(
+      port_,
       client,
       url,
       body,
@@ -236,16 +279,18 @@ class DownmanWire implements FlutterRustBridgeWireBase {
     );
   }
 
-  late final _wire_http_client_postPtr = _lookup<ffi.NativeFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_post');
-  late final _wire_http_client_post = _wire_http_client_postPtr.asFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
+  late final _wire_http_client_postPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_post');
+  late final _wire_http_client_post = _wire_http_client_postPtr.asFunction<void Function(int, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
 
-  WireSyncReturn wire_http_client_put(
+  void wire_http_client_put(
+    int port_,
     wire_HttpClient client,
     ffi.Pointer<wire_uint_8_list> url,
     ffi.Pointer<wire_uint_8_list> body,
     ffi.Pointer<wire_Config> config,
   ) {
     return _wire_http_client_put(
+      port_,
       client,
       url,
       body,
@@ -253,16 +298,18 @@ class DownmanWire implements FlutterRustBridgeWireBase {
     );
   }
 
-  late final _wire_http_client_putPtr = _lookup<ffi.NativeFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_put');
-  late final _wire_http_client_put = _wire_http_client_putPtr.asFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
+  late final _wire_http_client_putPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_put');
+  late final _wire_http_client_put = _wire_http_client_putPtr.asFunction<void Function(int, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
 
-  WireSyncReturn wire_http_client_patch(
+  void wire_http_client_patch(
+    int port_,
     wire_HttpClient client,
     ffi.Pointer<wire_uint_8_list> url,
     ffi.Pointer<wire_uint_8_list> body,
     ffi.Pointer<wire_Config> config,
   ) {
     return _wire_http_client_patch(
+      port_,
       client,
       url,
       body,
@@ -270,53 +317,59 @@ class DownmanWire implements FlutterRustBridgeWireBase {
     );
   }
 
-  late final _wire_http_client_patchPtr = _lookup<ffi.NativeFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_patch');
-  late final _wire_http_client_patch = _wire_http_client_patchPtr.asFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
+  late final _wire_http_client_patchPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_patch');
+  late final _wire_http_client_patch = _wire_http_client_patchPtr.asFunction<void Function(int, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
 
-  WireSyncReturn wire_http_client_delete(
+  void wire_http_client_delete(
+    int port_,
     wire_HttpClient client,
     ffi.Pointer<wire_uint_8_list> url,
     ffi.Pointer<wire_Config> config,
   ) {
     return _wire_http_client_delete(
+      port_,
       client,
       url,
       config,
     );
   }
 
-  late final _wire_http_client_deletePtr = _lookup<ffi.NativeFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_delete');
-  late final _wire_http_client_delete = _wire_http_client_deletePtr.asFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
+  late final _wire_http_client_deletePtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_delete');
+  late final _wire_http_client_delete = _wire_http_client_deletePtr.asFunction<void Function(int, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
 
-  WireSyncReturn wire_http_client_options(
+  void wire_http_client_options(
+    int port_,
     wire_HttpClient client,
     ffi.Pointer<wire_uint_8_list> url,
     ffi.Pointer<wire_Config> config,
   ) {
     return _wire_http_client_options(
+      port_,
       client,
       url,
       config,
     );
   }
 
-  late final _wire_http_client_optionsPtr = _lookup<ffi.NativeFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_options');
-  late final _wire_http_client_options = _wire_http_client_optionsPtr.asFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
+  late final _wire_http_client_optionsPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_options');
+  late final _wire_http_client_options = _wire_http_client_optionsPtr.asFunction<void Function(int, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
 
-  WireSyncReturn wire_http_client_head(
+  void wire_http_client_head(
+    int port_,
     wire_HttpClient client,
     ffi.Pointer<wire_uint_8_list> url,
     ffi.Pointer<wire_Config> config,
   ) {
     return _wire_http_client_head(
+      port_,
       client,
       url,
       config,
     );
   }
 
-  late final _wire_http_client_headPtr = _lookup<ffi.NativeFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_head');
-  late final _wire_http_client_head = _wire_http_client_headPtr.asFunction<WireSyncReturn Function(wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
+  late final _wire_http_client_headPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>>('wire_http_client_head');
+  late final _wire_http_client_head = _wire_http_client_headPtr.asFunction<void Function(int, wire_HttpClient, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_Config>)>();
 
   wire_HttpClient new_HttpClient() {
     return _new_HttpClient();
@@ -324,6 +377,13 @@ class DownmanWire implements FlutterRustBridgeWireBase {
 
   late final _new_HttpClientPtr = _lookup<ffi.NativeFunction<wire_HttpClient Function()>>('new_HttpClient');
   late final _new_HttpClient = _new_HttpClientPtr.asFunction<wire_HttpClient Function()>();
+
+  ffi.Pointer<wire_BaseConfig> new_box_autoadd_base_config_0() {
+    return _new_box_autoadd_base_config_0();
+  }
+
+  late final _new_box_autoadd_base_config_0Ptr = _lookup<ffi.NativeFunction<ffi.Pointer<wire_BaseConfig> Function()>>('new_box_autoadd_base_config_0');
+  late final _new_box_autoadd_base_config_0 = _new_box_autoadd_base_config_0Ptr.asFunction<ffi.Pointer<wire_BaseConfig> Function()>();
 
   ffi.Pointer<wire_Config> new_box_autoadd_config_0() {
     return _new_box_autoadd_config_0();
@@ -387,28 +447,6 @@ class DownmanWire implements FlutterRustBridgeWireBase {
   late final _share_opaque_HttpClientPtr = _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>>('share_opaque_HttpClient');
   late final _share_opaque_HttpClient = _share_opaque_HttpClientPtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
 
-  void drop_opaque_HttpResponse(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _drop_opaque_HttpResponse(
-      ptr,
-    );
-  }
-
-  late final _drop_opaque_HttpResponsePtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>('drop_opaque_HttpResponse');
-  late final _drop_opaque_HttpResponse = _drop_opaque_HttpResponsePtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  ffi.Pointer<ffi.Void> share_opaque_HttpResponse(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _share_opaque_HttpResponse(
-      ptr,
-    );
-  }
-
-  late final _share_opaque_HttpResponsePtr = _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>>('share_opaque_HttpResponse');
-  late final _share_opaque_HttpResponse = _share_opaque_HttpResponsePtr.asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>)>();
-
   void free_WireSyncReturn(
     WireSyncReturn ptr,
   ) {
@@ -422,10 +460,6 @@ class DownmanWire implements FlutterRustBridgeWireBase {
 }
 
 final class _Dart_Handle extends ffi.Opaque {}
-
-final class wire_HttpClient extends ffi.Struct {
-  external ffi.Pointer<ffi.Void> ptr;
-}
 
 final class wire_uint_8_list extends ffi.Struct {
   external ffi.Pointer<ffi.Uint8> ptr;
@@ -445,6 +479,18 @@ final class wire_list___record__String_String extends ffi.Struct {
 
   @ffi.Int32()
   external int len;
+}
+
+final class wire_BaseConfig extends ffi.Struct {
+  external ffi.Pointer<wire_uint_8_list> base_url;
+
+  external ffi.Pointer<wire_list___record__String_String> headers;
+
+  external ffi.Pointer<ffi.UintPtr> timeout_sec;
+}
+
+final class wire_HttpClient extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> ptr;
 }
 
 final class wire_Config extends ffi.Struct {

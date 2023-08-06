@@ -10,6 +10,11 @@ crate-type = ["staticlib", "cdylib"]
 flutter_rust_bridge_codegen = "1.80.*"
 
 [dependencies]
+reqwest = { version = "0.11", default-features = false, features = [
+  "rustls-tls",
+  "stream",
+  "gzip",
+] }
 flutter_rust_bridge = "1.80.*"
-reqwest = { version = "0.11", features = ["json"] }
+# don't use openssl in reqwest
 tokio = { version = "1", features = ["full"] }

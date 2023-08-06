@@ -3,7 +3,5 @@
 /// More dartdocs go here.
 library downman;
 
-export 'src/downman_base.dart';
-
-// TODO: Export any libraries intended for clients of this package.
-export 'src/ffi.dart';
+export 'src/downman_base.dart' show Downman;
+export 'src/bridge_generated.dart' show BaseConfig, Config;

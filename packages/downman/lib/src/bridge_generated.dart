@@ -13,48 +13,78 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:uuid/uuid.dart';
-import 'bridge_generated.io.dart' if (dart.library.html) 'bridge_generated.web.dart';
+import 'bridge_generated.io.dart'
+    if (dart.library.html) 'bridge_generated.web.dart';
 
 abstract class Downman {
-  HttpClient httpClientNew({dynamic hint});
+  HttpClient httpClientNew({BaseConfig? config, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kHttpClientNewConstMeta;
 
-  HttpResponse httpClientGet({required HttpClient client, required String url, Config? config, dynamic hint});
+  FlutterRustBridgeTaskConstMeta get kWhyHttpClientConstMeta;
+
+  Future<HttpResponse> httpClientGet(
+      {required HttpClient client,
+      required String url,
+      Config? config,
+      dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kHttpClientGetConstMeta;
 
-  HttpResponse httpClientPost({required HttpClient client, required String url, String? body, Config? config, dynamic hint});
+  Future<HttpResponse> httpClientPost(
+      {required HttpClient client,
+      required String url,
+      String? body,
+      Config? config,
+      dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kHttpClientPostConstMeta;
 
-  HttpResponse httpClientPut({required HttpClient client, required String url, String? body, Config? config, dynamic hint});
+  Future<HttpResponse> httpClientPut(
+      {required HttpClient client,
+      required String url,
+      String? body,
+      Config? config,
+      dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kHttpClientPutConstMeta;
 
-  HttpResponse httpClientPatch({required HttpClient client, required String url, String? body, Config? config, dynamic hint});
+  Future<HttpResponse> httpClientPatch(
+      {required HttpClient client,
+      required String url,
+      String? body,
+      Config? config,
+      dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kHttpClientPatchConstMeta;
 
-  HttpResponse httpClientDelete({required HttpClient client, required String url, Config? config, dynamic hint});
+  Future<HttpResponse> httpClientDelete(
+      {required HttpClient client,
+      required String url,
+      Config? config,
+      dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kHttpClientDeleteConstMeta;
 
-  HttpResponse httpClientOptions({required HttpClient client, required String url, Config? config, dynamic hint});
+  Future<HttpResponse> httpClientOptions(
+      {required HttpClient client,
+      required String url,
+      Config? config,
+      dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kHttpClientOptionsConstMeta;
 
-  HttpResponse httpClientHead({required HttpClient client, required String url, Config? config, dynamic hint});
+  Future<HttpResponse> httpClientHead(
+      {required HttpClient client,
+      required String url,
+      Config? config,
+      dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kHttpClientHeadConstMeta;
 
   DropFnType get dropOpaqueHttpClient;
   ShareFnType get shareOpaqueHttpClient;
   OpaqueTypeFinalizer get HttpClientFinalizer;
-
-  DropFnType get dropOpaqueHttpResponse;
-  ShareFnType get shareOpaqueHttpResponse;
-  OpaqueTypeFinalizer get HttpResponseFinalizer;
 }
 
 @sealed
@@ -71,26 +101,20 @@ class HttpClient extends FrbOpaque {
   OpaqueTypeFinalizer get staticFinalizer => bridge.HttpClientFinalizer;
 }
 
-@sealed
-class HttpResponse extends FrbOpaque {
-  final Downman bridge;
-  HttpResponse.fromRaw(int ptr, int size, this.bridge) : super.unsafe(ptr, size);
-  @override
-  DropFnType get dropFn => bridge.dropOpaqueHttpResponse;
+class BaseConfig {
+  final String? baseUrl;
+  final List<(String, String)>? headers;
+  final int? timeoutSec;
 
-  @override
-  ShareFnType get shareFn => bridge.shareOpaqueHttpResponse;
-
-  @override
-  OpaqueTypeFinalizer get staticFinalizer => bridge.HttpResponseFinalizer;
+  const BaseConfig({
+    this.baseUrl,
+    this.headers,
+    this.timeoutSec,
+  });
 }
 
 class Config {
-  final List<
-      (
-        String,
-        String
-      )>? headers;
+  final List<(String, String)>? headers;
   final int? timeoutSec;
 
   const Config({
@@ -99,226 +123,230 @@ class Config {
   });
 }
 
+class HttpResponse {
+  final int status;
+  final List<(String, String)> headers;
+  final Uint8List? body;
+  final String url;
+
+  const HttpResponse({
+    required this.status,
+    required this.headers,
+    this.body,
+    required this.url,
+  });
+}
+
 class DownmanImpl implements Downman {
   final DownmanPlatform _platform;
-  factory DownmanImpl(ExternalLibrary dylib) => DownmanImpl.raw(DownmanPlatform(dylib));
+  factory DownmanImpl(ExternalLibrary dylib) =>
+      DownmanImpl.raw(DownmanPlatform(dylib));
 
   /// Only valid on web/WASM platforms.
-  factory DownmanImpl.wasm(FutureOr<WasmModule> module) => DownmanImpl(module as ExternalLibrary);
+  factory DownmanImpl.wasm(FutureOr<WasmModule> module) =>
+      DownmanImpl(module as ExternalLibrary);
   DownmanImpl.raw(this._platform);
-  HttpClient httpClientNew({dynamic hint}) {
+  HttpClient httpClientNew({BaseConfig? config, dynamic hint}) {
+    var arg0 = _platform.api2wire_opt_box_autoadd_base_config(config);
     return _platform.executeSync(FlutterRustBridgeSyncTask(
-      callFfi: () => _platform.inner.wire_http_client_new(),
+      callFfi: () => _platform.inner.wire_http_client_new(arg0),
       parseSuccessData: _wire2api_HttpClient,
       constMeta: kHttpClientNewConstMeta,
-      argValues: [],
+      argValues: [config],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHttpClientNewConstMeta => const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kHttpClientNewConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
         debugName: "http_client_new",
+        argNames: ["config"],
+      );
+
+  FlutterRustBridgeTaskConstMeta get kWhyHttpClientConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "___why_http_client",
         argNames: [],
       );
 
-  HttpResponse httpClientGet({required HttpClient client, required String url, Config? config, dynamic hint}) {
+  Future<HttpResponse> httpClientGet(
+      {required HttpClient client,
+      required String url,
+      Config? config,
+      dynamic hint}) {
     var arg0 = _platform.api2wire_HttpClient(client);
     var arg1 = _platform.api2wire_String(url);
     var arg2 = _platform.api2wire_opt_box_autoadd_config(config);
-    return _platform.executeSync(FlutterRustBridgeSyncTask(
-      callFfi: () => _platform.inner.wire_http_client_get(arg0, arg1, arg2),
-      parseSuccessData: _wire2api_HttpResponse,
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_http_client_get(port_, arg0, arg1, arg2),
+      parseSuccessData: _wire2api_http_response,
       constMeta: kHttpClientGetConstMeta,
-      argValues: [
-        client,
-        url,
-        config
-      ],
+      argValues: [client, url, config],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHttpClientGetConstMeta => const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kHttpClientGetConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
         debugName: "http_client_get",
-        argNames: [
-          "client",
-          "url",
-          "config"
-        ],
+        argNames: ["client", "url", "config"],
       );
 
-  HttpResponse httpClientPost({required HttpClient client, required String url, String? body, Config? config, dynamic hint}) {
+  Future<HttpResponse> httpClientPost(
+      {required HttpClient client,
+      required String url,
+      String? body,
+      Config? config,
+      dynamic hint}) {
     var arg0 = _platform.api2wire_HttpClient(client);
     var arg1 = _platform.api2wire_String(url);
     var arg2 = _platform.api2wire_opt_String(body);
     var arg3 = _platform.api2wire_opt_box_autoadd_config(config);
-    return _platform.executeSync(FlutterRustBridgeSyncTask(
-      callFfi: () => _platform.inner.wire_http_client_post(arg0, arg1, arg2, arg3),
-      parseSuccessData: _wire2api_HttpResponse,
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_http_client_post(port_, arg0, arg1, arg2, arg3),
+      parseSuccessData: _wire2api_http_response,
       constMeta: kHttpClientPostConstMeta,
-      argValues: [
-        client,
-        url,
-        body,
-        config
-      ],
+      argValues: [client, url, body, config],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHttpClientPostConstMeta => const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kHttpClientPostConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
         debugName: "http_client_post",
-        argNames: [
-          "client",
-          "url",
-          "body",
-          "config"
-        ],
+        argNames: ["client", "url", "body", "config"],
       );
 
-  HttpResponse httpClientPut({required HttpClient client, required String url, String? body, Config? config, dynamic hint}) {
+  Future<HttpResponse> httpClientPut(
+      {required HttpClient client,
+      required String url,
+      String? body,
+      Config? config,
+      dynamic hint}) {
     var arg0 = _platform.api2wire_HttpClient(client);
     var arg1 = _platform.api2wire_String(url);
     var arg2 = _platform.api2wire_opt_String(body);
     var arg3 = _platform.api2wire_opt_box_autoadd_config(config);
-    return _platform.executeSync(FlutterRustBridgeSyncTask(
-      callFfi: () => _platform.inner.wire_http_client_put(arg0, arg1, arg2, arg3),
-      parseSuccessData: _wire2api_HttpResponse,
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_http_client_put(port_, arg0, arg1, arg2, arg3),
+      parseSuccessData: _wire2api_http_response,
       constMeta: kHttpClientPutConstMeta,
-      argValues: [
-        client,
-        url,
-        body,
-        config
-      ],
+      argValues: [client, url, body, config],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHttpClientPutConstMeta => const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kHttpClientPutConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
         debugName: "http_client_put",
-        argNames: [
-          "client",
-          "url",
-          "body",
-          "config"
-        ],
+        argNames: ["client", "url", "body", "config"],
       );
 
-  HttpResponse httpClientPatch({required HttpClient client, required String url, String? body, Config? config, dynamic hint}) {
+  Future<HttpResponse> httpClientPatch(
+      {required HttpClient client,
+      required String url,
+      String? body,
+      Config? config,
+      dynamic hint}) {
     var arg0 = _platform.api2wire_HttpClient(client);
     var arg1 = _platform.api2wire_String(url);
     var arg2 = _platform.api2wire_opt_String(body);
     var arg3 = _platform.api2wire_opt_box_autoadd_config(config);
-    return _platform.executeSync(FlutterRustBridgeSyncTask(
-      callFfi: () => _platform.inner.wire_http_client_patch(arg0, arg1, arg2, arg3),
-      parseSuccessData: _wire2api_HttpResponse,
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_http_client_patch(port_, arg0, arg1, arg2, arg3),
+      parseSuccessData: _wire2api_http_response,
       constMeta: kHttpClientPatchConstMeta,
-      argValues: [
-        client,
-        url,
-        body,
-        config
-      ],
+      argValues: [client, url, body, config],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHttpClientPatchConstMeta => const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kHttpClientPatchConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
         debugName: "http_client_patch",
-        argNames: [
-          "client",
-          "url",
-          "body",
-          "config"
-        ],
+        argNames: ["client", "url", "body", "config"],
       );
 
-  HttpResponse httpClientDelete({required HttpClient client, required String url, Config? config, dynamic hint}) {
+  Future<HttpResponse> httpClientDelete(
+      {required HttpClient client,
+      required String url,
+      Config? config,
+      dynamic hint}) {
     var arg0 = _platform.api2wire_HttpClient(client);
     var arg1 = _platform.api2wire_String(url);
     var arg2 = _platform.api2wire_opt_box_autoadd_config(config);
-    return _platform.executeSync(FlutterRustBridgeSyncTask(
-      callFfi: () => _platform.inner.wire_http_client_delete(arg0, arg1, arg2),
-      parseSuccessData: _wire2api_HttpResponse,
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_http_client_delete(port_, arg0, arg1, arg2),
+      parseSuccessData: _wire2api_http_response,
       constMeta: kHttpClientDeleteConstMeta,
-      argValues: [
-        client,
-        url,
-        config
-      ],
+      argValues: [client, url, config],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHttpClientDeleteConstMeta => const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kHttpClientDeleteConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
         debugName: "http_client_delete",
-        argNames: [
-          "client",
-          "url",
-          "config"
-        ],
+        argNames: ["client", "url", "config"],
       );
 
-  HttpResponse httpClientOptions({required HttpClient client, required String url, Config? config, dynamic hint}) {
+  Future<HttpResponse> httpClientOptions(
+      {required HttpClient client,
+      required String url,
+      Config? config,
+      dynamic hint}) {
     var arg0 = _platform.api2wire_HttpClient(client);
     var arg1 = _platform.api2wire_String(url);
     var arg2 = _platform.api2wire_opt_box_autoadd_config(config);
-    return _platform.executeSync(FlutterRustBridgeSyncTask(
-      callFfi: () => _platform.inner.wire_http_client_options(arg0, arg1, arg2),
-      parseSuccessData: _wire2api_HttpResponse,
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_http_client_options(port_, arg0, arg1, arg2),
+      parseSuccessData: _wire2api_http_response,
       constMeta: kHttpClientOptionsConstMeta,
-      argValues: [
-        client,
-        url,
-        config
-      ],
+      argValues: [client, url, config],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHttpClientOptionsConstMeta => const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kHttpClientOptionsConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
         debugName: "http_client_options",
-        argNames: [
-          "client",
-          "url",
-          "config"
-        ],
+        argNames: ["client", "url", "config"],
       );
 
-  HttpResponse httpClientHead({required HttpClient client, required String url, Config? config, dynamic hint}) {
+  Future<HttpResponse> httpClientHead(
+      {required HttpClient client,
+      required String url,
+      Config? config,
+      dynamic hint}) {
     var arg0 = _platform.api2wire_HttpClient(client);
     var arg1 = _platform.api2wire_String(url);
     var arg2 = _platform.api2wire_opt_box_autoadd_config(config);
-    return _platform.executeSync(FlutterRustBridgeSyncTask(
-      callFfi: () => _platform.inner.wire_http_client_head(arg0, arg1, arg2),
-      parseSuccessData: _wire2api_HttpResponse,
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_http_client_head(port_, arg0, arg1, arg2),
+      parseSuccessData: _wire2api_http_response,
       constMeta: kHttpClientHeadConstMeta,
-      argValues: [
-        client,
-        url,
-        config
-      ],
+      argValues: [client, url, config],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHttpClientHeadConstMeta => const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kHttpClientHeadConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
         debugName: "http_client_head",
-        argNames: [
-          "client",
-          "url",
-          "config"
-        ],
+        argNames: ["client", "url", "config"],
       );
 
   DropFnType get dropOpaqueHttpClient => _platform.inner.drop_opaque_HttpClient;
-  ShareFnType get shareOpaqueHttpClient => _platform.inner.share_opaque_HttpClient;
+  ShareFnType get shareOpaqueHttpClient =>
+      _platform.inner.share_opaque_HttpClient;
   OpaqueTypeFinalizer get HttpClientFinalizer => _platform.HttpClientFinalizer;
-
-  DropFnType get dropOpaqueHttpResponse => _platform.inner.drop_opaque_HttpResponse;
-  ShareFnType get shareOpaqueHttpResponse => _platform.inner.share_opaque_HttpResponse;
-  OpaqueTypeFinalizer get HttpResponseFinalizer => _platform.HttpResponseFinalizer;
 
   void dispose() {
     _platform.dispose();
@@ -329,8 +357,93 @@ class DownmanImpl implements Downman {
     return HttpClient.fromRaw(raw[0], raw[1], this);
   }
 
-  HttpResponse _wire2api_HttpResponse(dynamic raw) {
-    return HttpResponse.fromRaw(raw[0], raw[1], this);
+  String _wire2api_String(dynamic raw) {
+    return raw as String;
+  }
+
+  (String, String) _wire2api___record__String_String(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      _wire2api_String(arr[0]),
+      _wire2api_String(arr[1]),
+    );
+  }
+
+  BaseConfig _wire2api_base_config(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return BaseConfig(
+      baseUrl: _wire2api_opt_String(arr[0]),
+      headers: _wire2api_opt_list___record__String_String(arr[1]),
+      timeoutSec: _wire2api_opt_box_autoadd_usize(arr[2]),
+    );
+  }
+
+  BaseConfig _wire2api_box_autoadd_base_config(dynamic raw) {
+    return _wire2api_base_config(raw);
+  }
+
+  int _wire2api_box_autoadd_usize(dynamic raw) {
+    return _wire2api_usize(raw);
+  }
+
+  HttpResponse _wire2api_http_response(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return HttpResponse(
+      status: _wire2api_u16(arr[0]),
+      headers: _wire2api_list___record__String_String(arr[1]),
+      body: _wire2api_opt_uint_8_list(arr[2]),
+      url: _wire2api_String(arr[3]),
+    );
+  }
+
+  List<(String, String)> _wire2api_list___record__String_String(dynamic raw) {
+    return (raw as List<dynamic>)
+        .map(_wire2api___record__String_String)
+        .toList();
+  }
+
+  String? _wire2api_opt_String(dynamic raw) {
+    return raw == null ? null : _wire2api_String(raw);
+  }
+
+  BaseConfig? _wire2api_opt_box_autoadd_base_config(dynamic raw) {
+    return raw == null ? null : _wire2api_box_autoadd_base_config(raw);
+  }
+
+  int? _wire2api_opt_box_autoadd_usize(dynamic raw) {
+    return raw == null ? null : _wire2api_box_autoadd_usize(raw);
+  }
+
+  List<(String, String)>? _wire2api_opt_list___record__String_String(
+      dynamic raw) {
+    return raw == null ? null : _wire2api_list___record__String_String(raw);
+  }
+
+  Uint8List? _wire2api_opt_uint_8_list(dynamic raw) {
+    return raw == null ? null : _wire2api_uint_8_list(raw);
+  }
+
+  int _wire2api_u16(dynamic raw) {
+    return raw as int;
+  }
+
+  int _wire2api_u8(dynamic raw) {
+    return raw as int;
+  }
+
+  Uint8List _wire2api_uint_8_list(dynamic raw) {
+    return raw as Uint8List;
+  }
+
+  int _wire2api_usize(dynamic raw) {
+    return castInt(raw);
   }
 }
 

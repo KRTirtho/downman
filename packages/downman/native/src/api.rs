@@ -1,11 +1,19 @@
 use flutter_rust_bridge::{RustOpaque, SyncReturn};
 use tokio::runtime::Runtime;
 
-use crate::core::{client::HttpClient, config::Config, response::HttpResponse};
+use crate::core::{
+    client::HttpClient,
+    config::{BaseConfig, Config},
+    response::HttpResponse,
+};
 
-pub fn http_client_new() -> SyncReturn<RustOpaque<HttpClient>> {
-    let client = HttpClient::new(None);
+pub fn http_client_new(config: Option<BaseConfig>) -> SyncReturn<RustOpaque<HttpClient>> {
+    let client = HttpClient::new(config);
     SyncReturn(RustOpaque::new(client))
+}
+
+pub fn ___why_http_client() -> HttpClient {
+    HttpClient::new(None)
 }
 
 pub fn http_client_get(
