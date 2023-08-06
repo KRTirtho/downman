@@ -1,0 +1,15 @@
+version: 2
+enable-beta-ecosystems: true
+updates:
+  - package-ecosystem: pub
+    directory: "/packages/downman"
+    schedule:
+      interval: weekly
+  - package-ecosystem: pub
+    directory: "/packages/downman/example"
+    schedule:
+      interval: weekly
+  - package-ecosystem: cargo
+    directory: "/packages/downman/native"
+    schedule:
+      interval: weekly
