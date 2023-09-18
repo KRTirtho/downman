@@ -15,6 +15,6 @@ reqwest = { version = "0.11", default-features = false, features = [
   "stream",
   "gzip",
 ] }
-flutter_rust_bridge = "1.80.*"
+flutter_rust_bridge = "1.82.*"
 # don't use openssl in reqwest
 tokio = { version = "1", features = ["full"] }
